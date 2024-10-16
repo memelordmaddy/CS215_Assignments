@@ -21,30 +21,25 @@ print("Data distribution")
 print(probability)
 
 def cross_validation_score(data, n):
+    nbins = np.arange(1, 1001)
+    h = 4 / nbins
+    counts = np.zeros((len(nbins), nbins[-1]))
 
-    x = []
-    y = []
-    for nbins in range(1, 1001):
-        h = 4 / nbins
+    for idx, nb in enumerate(nbins):
+        counts[idx, :nb] = np.histogram(data, np.linspace(0, 4, nb + 1))[0]
 
-        _bins = np.linspace(0, 4, nbins + 1)
-        count = np.histogram(data, _bins)[0]
-        probability = (count / n)
-
-        pj_2 = np.sum(probability ** 2)
-
-        y_h = 2/((n - 1) * h) - ((n + 1) * pj_2)/((n - 1) * h)
-        x.append(h)
-        y.append(y_h)
+    probabilities = counts / n
+    pj_2 = np.sum(probabilities ** 2, axis=1)
+    y_h = (2 / ((n - 1) * h)) - ((n + 1) * pj_2) / ((n - 1) * h)
 
     plt.clf()
-    plt.plot(x, y)
+    plt.plot(h, y_h)
     plt.title("Cross Validation Score Vs Bandwidth")
     plt.ylabel("Cross Validation Score")
     plt.xlabel("Bandwidth(h)")
     plt.savefig("crossvalidation.png")
 
-    h_min = x[np.argmin(y)]
+    h_min = h[np.argmin(y_h)]
     
     return h_min
 
