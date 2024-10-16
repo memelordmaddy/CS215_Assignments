@@ -21,8 +21,6 @@ class EpanechnikovKDE:
         """Evaluate the KDE at multiple points x."""
         return np.sum(self.epanechnikov_kernel(x, self.data)) / (len(self.data) * self.bandwidth**2)
 
-
-
 # Load the data from the NPZ file
 data_file = np.load('transaction_data.npz')
 data = data_file['data']
