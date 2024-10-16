@@ -17,6 +17,7 @@ plt.savefig("10binhistogram.png")
 total_count = np.sum(counts)
 probability = counts / total_count
 
+print("Data distribution")
 print(probability)
 
 def cross_validation_score(data, n):
@@ -48,6 +49,7 @@ def cross_validation_score(data, n):
     return h_min
 
 h_min = cross_validation_score(data, total_count)
+print("Optimal bandwidth :", h_min)
 
 plt.clf()
 counts = plt.hist(data, bins=np.linspace(0, 4, int(4/h_min)+1))[0]
